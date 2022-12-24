@@ -1,4 +1,3 @@
-from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from sqlalchemy import and_
@@ -32,11 +31,7 @@ def createPost(db: Session, data: postSchema, userId: int):
             author = userId
         )
         dbCommit(db, post)
-
-        response = {
-            "newPost": post.__dict__
-        }
-        return responseBody(201,"Post created successfully", response)
+        return responseBody(201,"Post created successfully", post.__dict__)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Something went wrong!")

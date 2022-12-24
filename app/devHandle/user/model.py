@@ -1,7 +1,4 @@
 from sqlalchemy import Column, Integer, String
-"""from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import Boolean"""
 
 from app.server.database import Base
 
