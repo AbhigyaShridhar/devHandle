@@ -2,4 +2,4 @@ uvicorn
 fastapi
 SQLAlchemy
 pydantic[email]
-jwt
+PyJWT

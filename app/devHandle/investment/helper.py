@@ -28,7 +28,7 @@ def getInvestors(db: Session, userId: int):
         investors = db.query(Investment).filter(Investment.user==userId).all()
         for investor in investors:
             investor = investor.__dict__
-            investor["user"] = db.query(User).filter(User.id==investor["user"]).first().__dict__
+            investor["user"] = db.query(User).filter(User.id==investor["investor"]).first().__dict__
         response = {
             "investors": investors
         }
@@ -77,7 +77,7 @@ def invest(db: Session, data: investmentSchema, userId: int):
 def checkout(db: Session, investmentId: int, userId: int):
     try:
         investment = db.query(Investment).filter(Investment.id==investmentId).first()
-        investment.delete()
+        db.delete(investment)
         db.commit()
         return responseBody(200, "checked out successfully")
     except Exception as e:
