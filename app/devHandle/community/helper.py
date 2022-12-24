@@ -39,14 +39,21 @@ def createPost(db: Session, data: postSchema, userId: int):
 
 def upvotePost(db: Session, postId: int, userId: int):
     try:
-        vote = Vote(
-            type = "up",
-            author = userId,
-            post = postId
-        )
-        dbCommit(db, vote)
-
-        return responseBody(201,"Post upvoted successfully")
+        sameVote = db.query(Vote).filter(and_(Vote.type=='up', Vote.post==postId, Vote.author==userId)).first()
+        vote = db.query(Vote).filter(and_(Vote.type=='down', Vote.post==postId, Vote.author==userId)).first()
+        if vote:
+            db.delete(vote)
+            db.commit()
+        elif sameVote:
+            return responseBody(300, "Already voted")
+        else:
+            vote = Vote(
+                type = "up",
+                author = userId,
+                post = postId
+            )
+            dbCommit(db, vote)
+        return responseBody(201, "post upvoted successfully")
 
     except Exception as e:
         print(e)
@@ -55,12 +62,20 @@ def upvotePost(db: Session, postId: int, userId: int):
 
 def downvotePost(db: Session, postId: int, userId: int):
     try:
-        vote = Vote(
-            type = "down",
-            author = userId,
-            post = postId
-        )
-        dbCommit(db, vote)
+        sameVote = db.query(Vote).filter(and_(Vote.type=='down', Vote.post==postId, Vote.author==userId)).first()
+        vote = db.query(Vote).filter(and_(Vote.type=='up', Vote.post==postId, Vote.author==userId)).first()
+        if vote:
+            db.delete(vote)
+            db.commit()
+        elif sameVote:
+            return responseBody(300, "already downvoted")
+        else:
+            vote = Vote(
+                type = "down",
+                author = userId,
+                post = postId
+            )
+            dbCommit(db, vote)
 
         return responseBody(201,"Post downvoted successfully")
 
@@ -72,7 +87,6 @@ def downvotePost(db: Session, postId: int, userId: int):
 def giveDiamond(db: Session, answerId: int, userId: int):
     try:
         diamond = Diamond(
-            donor = userId,
             answer = answerId
         )
         dbCommit(db, diamond)
@@ -95,8 +109,9 @@ def acceptAnswer(db: Session, answerId: int, userId: int):
             response = {
                 'answer': answer.first()
             }
-        
-        return responseBody(201,"Answer accepted as solution", response)
+            return responseBody(201,"Answer accepted as solution", response)
+        else:
+            return responseBody(300, "invalid operation")
 
     except Exception as e:
         print(e)

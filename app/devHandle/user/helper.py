@@ -45,7 +45,6 @@ def signup(db: Session, data: signupSchema):
         dbCommit(db, db_user)
 
         db.commit()
-        db.refresh()
 
         userData = getUserData(db, db_user)
         response = {

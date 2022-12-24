@@ -55,6 +55,8 @@ def getInvestmentDetails(investmentId: int, db: Session, userId: int):
 
 def invest(db: Session, data: investmentSchema, userId: int):
     try:
+        if userId == data.user:
+            return responseBody(300, "Can't invest in yourself")
         iUser = db.query(User).filter(User.id==data.user).first()
         investment = Investment(
             amount = data.amount,
