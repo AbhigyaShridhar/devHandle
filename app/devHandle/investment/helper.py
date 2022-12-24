@@ -1,4 +1,3 @@
-from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from sqlalchemy import or_, and_
@@ -57,15 +56,18 @@ def invest(db: Session, data: investmentSchema, userId: int):
     try:
         if userId == data.user:
             return responseBody(300, "Can't invest in yourself")
-        iUser = db.query(User).filter(User.id==data.user).first()
+        iUser = db.query(User).filter(User.id==data.user)
         investment = Investment(
             amount = data.amount,
             user = data.user,
             investor = userId,
-            startingReputation = iUser.reputation,
-            currentReputation = iUser.reputation
+            startingReputation = iUser.first().reputation,
+            currentReputation = iUser.first().reputation
         )
         dbCommit(db, investment)
+        iUser.update({'reputation': iUser.first().reputation})
+        db.commit()
+        db.refresh(iUser.first())
 
         return responseBody(201, "new investment made", investment.__dict__)
 

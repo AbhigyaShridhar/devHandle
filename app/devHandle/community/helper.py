@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from sqlalchemy import and_
 
 from .model import Post, Answer, Vote, Diamond
+from ..user.model import User
 from .schema import postSchema, answerSchema
 from ...utils.functions import dbCommit, responseBody
 
@@ -90,6 +91,11 @@ def giveDiamond(db: Session, answerId: int, userId: int):
             answer = answerId
         )
         dbCommit(db, diamond)
+        answer = db.query(Answer).filter(Answer.id==answerId).first()
+        user = db.query(User).filter(User.id==answer.author)
+        user.update({'reputation': user.first().reputation + 5})
+        db.commit()
+        db.refresh(user.first())
 
         return responseBody(201,"Diamond donated successfully")
 
@@ -109,6 +115,10 @@ def acceptAnswer(db: Session, answerId: int, userId: int):
             response = {
                 'answer': answer.first()
             }
+            user = db.query(User).filter(User.id==answer.first().author)
+            user.update({'reputation': user.first().reputation + 10})
+            db.commit()
+            db.refresh(user.first())
             return responseBody(201,"Answer accepted as solution", response)
         else:
             return responseBody(300, "invalid operation")
