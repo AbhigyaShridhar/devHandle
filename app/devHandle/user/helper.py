@@ -31,7 +31,7 @@ def getUserDetails(db: Session, id: str):
         return responseBody(200,"user details",response)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 def checkUserExist(db: Session, username: str, email: Optional[str] = None):
     return db.query(User).filter(or_(User.username==username,User.email==email)).first()
@@ -54,7 +54,7 @@ def signup(db: Session, data: signupSchema):
         return responseBody(201,"User created successfully", response)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 def login(db: Session, data: loginSchema):
     try:
@@ -73,4 +73,4 @@ def login(db: Session, data: loginSchema):
             return responseBody(404,"User not found!")
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500,detail="Something went wrong!")
+        raise HTTPException(status_code=500,detail=str(e))

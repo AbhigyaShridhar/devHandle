@@ -20,7 +20,7 @@ def getPostDetails(db: Session, postId: int):
         return responseBody(200,"user details",post)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def createPost(db: Session, data: postSchema, userId: int):
@@ -34,7 +34,7 @@ def createPost(db: Session, data: postSchema, userId: int):
         return responseBody(201,"Post created successfully", post.__dict__)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def upvotePost(db: Session, postId: int, userId: int):
@@ -57,7 +57,7 @@ def upvotePost(db: Session, postId: int, userId: int):
 
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def downvotePost(db: Session, postId: int, userId: int):
@@ -81,7 +81,7 @@ def downvotePost(db: Session, postId: int, userId: int):
 
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def giveDiamond(db: Session, answerId: int, userId: int):
@@ -95,7 +95,7 @@ def giveDiamond(db: Session, answerId: int, userId: int):
 
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def acceptAnswer(db: Session, answerId: int, userId: int):
@@ -115,7 +115,7 @@ def acceptAnswer(db: Session, answerId: int, userId: int):
 
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def createAnswer(db: Session, data: answerSchema, userId: int):
@@ -133,5 +133,5 @@ def createAnswer(db: Session, data: answerSchema, userId: int):
         return responseBody(201,"Answer created successfully", response)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong!")
+        raise HTTPException(status_code=500, detail=str(e))
 

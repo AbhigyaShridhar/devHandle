@@ -20,7 +20,7 @@ def getInvestments(db: Session, userId: int):
         return responseBody(201, "User investments", response)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def getInvestors(db: Session, userId: int):
@@ -35,7 +35,7 @@ def getInvestors(db: Session, userId: int):
         return responseBody(201, "User investors", response)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def getInvestmentDetails(investmentId: int, db: Session, userId: int):
@@ -50,7 +50,7 @@ def getInvestmentDetails(investmentId: int, db: Session, userId: int):
             return responseBody(300, "invalid operation")
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def invest(db: Session, data: investmentSchema, userId: int):
@@ -71,7 +71,7 @@ def invest(db: Session, data: investmentSchema, userId: int):
 
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def checkout(db: Session, investmentId: int, userId: int):
@@ -82,4 +82,4 @@ def checkout(db: Session, investmentId: int, userId: int):
         return responseBody(200, "checked out successfully")
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=str(e))
