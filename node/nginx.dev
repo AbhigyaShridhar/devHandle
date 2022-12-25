@@ -7,7 +7,7 @@ http {
     server_name deso.run;
 
     location / {
-      proxy_pass http://frontend:7070;
+      proxy_pass http://frontend:7071;
     }
 
     location /api/ {

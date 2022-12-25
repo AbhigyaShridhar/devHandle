@@ -18,13 +18,13 @@ services:
     container_name: frontend 
     image: docker.io/desoprotocol/frontend:stable
     ports:
-    - 7070:7070
+    - 7071:7071
     volumes:
     - ./:/app
     env_file:
     - dev.env
     expose:
-    - "7070"
+    - "7071"
   nginx: 
     container_name: nginx
     image: nginx:latest
